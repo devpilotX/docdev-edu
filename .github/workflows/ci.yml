@@ -24,7 +24,7 @@ jobs:
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
       SESSION_SECRET: ci-session-secret-not-used-in-production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -74,7 +74,7 @@ jobs:
       SESSION_SECRET: ci-session-secret-not-used-in-production
       ADMIN_EMAIL: admissions@docdev.edu
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use Node.js
         uses: actions/setup-node@v4
