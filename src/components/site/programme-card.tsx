@@ -9,7 +9,10 @@ export function ProgrammeCard({ programme }: { programme: Programme }) {
   )
 
   return (
-    <Card as="article" className="flex h-full flex-col transition-colors hover:border-ink/25">
+    <Card
+      as="article"
+      className="relative flex h-full flex-col transition-colors hover:border-ink/25"
+    >
       <div className="flex items-center gap-2">
         <Badge>{programme.level}</Badge>
         <span className="text-[12px] text-muted">{programme.award}</span>
