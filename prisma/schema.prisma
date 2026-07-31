@@ -1,0 +1,84 @@
+// DarkDev EDU — database schema
+// Admissions enquiries are the only write-heavy entity in the product;
+// prospectus content (programmes, faculty, news) is version controlled in
+// src/content so that editorial changes go through code review.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InquiryStatus {
+  NEW
+  IN_REVIEW
+  CONTACTED
+  APPLICATION_SENT
+  ENROLLED
+  CLOSED
+}
+
+enum InquiryPriority {
+  HOT
+  WARM
+  NURTURE
+}
+
+enum InquiryEventType {
+  CREATED
+  STATUS_CHANGED
+  NOTE_ADDED
+  FORWARDED
+  FORWARD_FAILED
+}
+
+/// A prospective student or parent enquiry raised from the public website.
+model Inquiry {
+  id            String          @id @default(cuid())
+  /// Human-quotable reference, e.g. DDE-2026-0007X3.
+  reference     String          @unique
+  name          String
+  email         String
+  /// Stored in E.164 format where a valid Indian number was supplied.
+  phone         String
+  programme     String
+  programmeSlug String?
+  level         String
+  intake        String
+  message       String
+  source        String          @default("website-form")
+  consent       Boolean         @default(false)
+  status        InquiryStatus   @default(NEW)
+  priority      InquiryPriority @default(WARM)
+  /// Salted hash of the submitting IP address. Never store raw addresses.
+  ipHash        String?
+  userAgent     String?
+  forwardedAt   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  events InquiryEvent[]
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@index([createdAt])
+  @@map("inquiries")
+}
+
+/// Append-only audit trail for everything that happens to an enquiry.
+model InquiryEvent {
+  id        String           @id @default(cuid())
+  inquiryId String
+  type      InquiryEventType
+  message   String
+  actor     String           @default("system")
+  createdAt DateTime         @default(now())
+
+  inquiry Inquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+
+  @@index([inquiryId, createdAt])
+  @@map("inquiry_events")
+}
