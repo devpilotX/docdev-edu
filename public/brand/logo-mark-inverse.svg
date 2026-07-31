@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="DarkDev EDU">
+  <title>DarkDev EDU</title>
+  <rect width="64" height="64" rx="14" fill="#FFFFFF"/>
+  <rect x="30.75" y="15" width="2.5" height="34" rx="1.25" fill="#0E1116"/>
+  <path d="M25 20 14 32l11 12" fill="none" stroke="#0E1116" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M39 20l11 12-11 12" fill="none" stroke="#2783DE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
