@@ -65,6 +65,7 @@ export default async function AdminDashboardPage({
             </p>
           </div>
           <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Route Handler that streams a CSV attachment, not a page; next/link would break the download. */}
             <a
               href="/api/inquiries/export"
               className="inline-flex min-h-11 items-center rounded-lg border border-line bg-white px-5 text-sm font-semibold text-ink hover:bg-surface-2"
