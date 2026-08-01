@@ -1,12 +1,26 @@
 import { expect, test } from "@playwright/test"
 
+/** Tailwind's `lg` breakpoint, the width at which the primary nav appears. */
+const DESKTOP_NAV_BREAKPOINT = 1024
+
 test.describe("public site", () => {
   test("home page renders the hero and primary navigation", async ({ page }) => {
     await page.goto("/")
     await expect(
       page.getByRole("heading", { level: 1, name: /rigorous, useful work/i }),
     ).toBeVisible()
-    await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible()
+
+    // `SiteHeader` renders the primary nav as `hidden lg:block`. Below the
+    // breakpoint the same links are reached through the navigation toggle,
+    // so assert whichever affordance this viewport is supposed to show.
+    const viewportWidth = page.viewportSize()?.width ?? 0
+    if (viewportWidth >= DESKTOP_NAV_BREAKPOINT) {
+      await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible()
+    } else {
+      await expect(
+        page.getByRole("button", { name: /open navigation/i }),
+      ).toBeVisible()
+    }
   })
 
   test("a visitor can reach a programme page from the academics index", async ({
